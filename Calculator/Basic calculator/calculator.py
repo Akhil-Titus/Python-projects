@@ -57,7 +57,35 @@ class Calculator:
         return Button(self.master, text=val,command =lambda:
                       self.click(val,write), width=width)
 
+    def click(self,text,write):
+        # handling what to do when clicks
+        #if write is true show val in screen
 
+        if write == None:
+            if text == '=' and self.equation:
+                 # replace the unicode value of division ./.with python division symbol / using regex
+                self.equation= re.sub(u"\u00F7", '/', self.equation)
+                print(self.equation)
+                answer =str(eval(self.equation))
+                self.clear_screen()
+                self.insert_screen(answer,newline=True)
+            elif text == u"\u232B":
+                self.clear_screen()
+        else:
+            self.insert_screen(text)
+
+    def clear_screen(self):
+            self.equation = ''
+            self.screen.configure(state='normal')
+            self.screen.delete('1.0',END)
+
+
+    def insert_screen(self,value,newline=False):
+            self.screen.configure(state='normal')
+            self.screen.insert(END,value)
+             # record every value inserted in screen
+            self.equation += str(value)
+            self.screen.configure(state ='disabled')
 
 
 root = Tk()
